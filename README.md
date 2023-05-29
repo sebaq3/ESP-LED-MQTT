@@ -1,3 +1,8 @@
+PRINCIPAL PROJECT
+https://github.com/dullage/ESP-LED-MQTT
+Adam Dullage
+
+
 ## Overview
 Allows the WiFi control of a WS8212 LED strip using an ESP8266 controller and an MQTT broker. Designed to work well with Home Assistant https://home-assistant.io/.
 
@@ -15,6 +20,11 @@ To use this code simply configure the PIN and NUMPIXELS variables in the NeoPixe
 * You can optionally enable ArduinoOTA to make uploading changes easier.
 
 ## Change Log
+29/05/2023
+* Function 5 modified to audio ritmic NOT TESTED
+* ArduinoJson5 to ArduinoJson6 NOT TESTED
+
+
 19/06/2019
 * Config is now in a separate file.
 * 2 new animations added.
