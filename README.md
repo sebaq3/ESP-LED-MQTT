@@ -124,7 +124,8 @@ Note: The recovery topic does not need to be used in the Home Assistant config.
 **input_select:**
 UI to allow user to trigger an animation.
 ```
-lamp:
+input_select:
+  lamp:
     name: Lamp
     options:
       - "Select..."
@@ -143,41 +144,45 @@ lamp:
 **automation:**
 Sends the appropriate MQTT command when a mode is selected and then returns the input select back to 'Select...'
 ```
-- alias: "Lamp Mode"
-  trigger:
-    platform: state
-    entity_id: input_select.lamp       
-  action:
-    - service: mqtt.publish
-      data_template:
-        topic: "/light/led"
-        payload: >
-          {% if trigger.to_state.state == 'Warm Light' %}
-            {0:2,2:[255,147,41]}
-          {% elif trigger.to_state.state == 'Strobe' %}
-            {0:3}
-          {% elif trigger.to_state.state == 'Fire' %}
-            {0:4}
-          {% elif trigger.to_state.state == 'Colour Phase' %}
-            {0:5,3:15}
-          {% elif trigger.to_state.state == 'Sparkle' %}
-            {0:6,2:[50,50,50],3:0,4:5,5:0}
-          {% elif trigger.to_state.state == 'Shoot / Drip' %}
-            {0:7,2:[255,147,41],8:0,10:1,9:30, 5:0 ,4:255,3:0,12:5,7:0}
-          {% elif trigger.to_state.state == 'Rain' %}
-            {0:8,11:1100}
-          {% elif trigger.to_state.state == 'Rainbow 1' %}
-            {0:12}
-          {% elif trigger.to_state.state == 'Rainbow 2' %}
-            {0:13}
-          {% else %}
-            {}
-          {% endif %}
-        retain: false
-    - service: input_select.select_option
-      data:
-        entity_id: input_select.stairlamp_mode
-        option: 'Select...'
+alias: Lamp Mode
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - input_select.lamp
+condition: []
+action:
+  - service: mqtt.publish
+    data:
+      topic: /light/led
+      payload_template: |
+        {% if trigger.to_state.state == 'Warm Light' %}
+          {0:2,2:[255,147,41]}
+        {% elif trigger.to_state.state == 'Strobe' %}
+          {0:3}
+        {% elif trigger.to_state.state == 'Fire' %}
+          {0:4}
+        {% elif trigger.to_state.state == 'Colour Phase' %}
+          {0:5,3:15}
+        {% elif trigger.to_state.state == 'Sparkle' %}
+          {0:6,2:[50,50,50],3:0,4:5,5:0}
+        {% elif trigger.to_state.state == 'Shoot / Drip' %}
+          {0:7,2:[255,147,41],8:0,10:1,9:30, 5:0 ,4:255,3:0,12:5,7:0}
+        {% elif trigger.to_state.state == 'Rain' %}
+          {0:8,11:1100}
+        {% elif trigger.to_state.state == 'Rainbow 1' %}
+          {0:12}
+        {% elif trigger.to_state.state == 'Rainbow 2' %}
+          {0:13}
+        {% else %}
+          {}
+        {% endif %}
+  - service: input_select.select_option
+    data:
+      option: Select...
+    target:
+      entity_id: input_select.lamp
+mode: single
 ```
 
 ## Contributers
