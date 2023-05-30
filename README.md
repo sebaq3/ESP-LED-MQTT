@@ -103,18 +103,21 @@ The message below would turn all LEDs to Blue (Mode = 1, rgbColourTwo = Blue). S
 **light:**
 Basic control of a light.
 ```
-- platform: mqtt
-  name: Lamp
-  state_topic: "light/lamp/state"
-  command_topic: "light/lamp"
-  rgb_state_topic: "light/lamp/rgb/state"
-  rgb_command_topic: "light/lamp/rgb"
-  availability_topic: "light/lamp/availability"
-  payload_not_available: "0"
-  payload_available: "1"
-  payload_off: "0"
-  payload_on: "1"
-  retain: false
+  mqtt:
+   light: 
+   - name: Lamp
+     state_topic: "/light/led/state"
+     command_topic: "/light/led"
+     rgb_state_topic: "/light/led/rgb/state"
+     rgb_command_topic: "/light/led/rgb"
+     availability:
+       - topic: "/light/led/availability"
+         payload_not_available: "0"
+         payload_available: "1"
+     payload_off: "0"
+     payload_on: "1"
+     retain: false
+     qos: 0 
 ```
 Note: The recovery topic does not need to be used in the Home Assistant config.
 
@@ -147,7 +150,7 @@ Sends the appropriate MQTT command when a mode is selected and then returns the 
   action:
     - service: mqtt.publish
       data_template:
-        topic: "switch/stairs"
+        topic: "/light/led"
         payload: >
           {% if trigger.to_state.state == 'Warm Light' %}
             {0:2,2:[255,147,41]}
